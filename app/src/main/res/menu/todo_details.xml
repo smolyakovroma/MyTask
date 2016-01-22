@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+ >
+    <item
+        android:id="@+id/menu_priority"
+        android:icon="@drawable/ic_priority"
+        app:showAsAction="always"
+        android:orderInCategory="1"
+        android:title="@string/priority">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item android:id="@+id/menu_priority_low"
+                    android:checked="true"
+                    android:title="@string/low"
+                    android:titleCondensed="0"
+                    />
+                <item android:id="@+id/menu_priority_middle"
+                    android:title="@string/middle"
+                    android:titleCondensed="1"
+                    />
+                <item android:id="@+id/menu_priority_high"
+                    android:title="@string/high"
+                    android:titleCondensed="2"
+                   />
+            </group>
+        </menu>
+
+    </item>
+    <item
+        android:orderInCategory="2"
+        android:id="@+id/back"
+        android:title="@string/back"
+        android:icon="@drawable/ic_backspace_white_24dp"
+        app:showAsAction="always"
+        />
+    <item
+        android:orderInCategory="3"
+        android:id="@+id/delete"
+        android:title="@string/delete"
+        android:icon="@drawable/ic_delete_white_24dp"
+        app:showAsAction="always"
+        />
+    <item
+        android:orderInCategory="4"
+        android:id="@+id/save"
+        android:icon="@drawable/ic_save_white_24dp"
+        android:title="@string/save"
+        app:showAsAction="always"
+        />
+</menu>

@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">MyTask</string>
+    <string name="title_activity_todo_list">TodoList</string>
+    <string name="title_activity_todo_details">TodoDetails</string>
+    <string name="add_task">+</string>
+    <string name="back">Назад</string>
+    <string name="save">Сохранить</string>
+    <string name="new_document">Новый документ</string>
+    <string name="delete">Удалить</string>
+    <string name="confirm_delete">Удалить заметку?</string>
+    <string name="cancel">Отмена</string>
+    <string name="empty_list">(нет заметок)</string>
+    <string name="search_title">Поиск</string>
+    <string name="sort">сортировать</string>
+    <string name="sort_date">по дате</string>
+    <string name="sort_name">по имени</string>
+    <string name="sort_priority">по приоритету</string>
+    <string name="priority">важность</string>
+    <string name="low">низкая</string>
+    <string name="middle">средняя</string>
+    <string name="high">высокая</string>
+</resources>

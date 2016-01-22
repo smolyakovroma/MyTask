@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".TodoList">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <requestFocus/>
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:padding="2dp"
+            android:id="@+id/frameSearch">
+        <EditText
+            android:id="@+id/txtSearch"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="top|left"
+            android:hint="@string/search_title"
+            android:singleLine="true"
+            android:textSize="25sp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:textColorHint="@color/search_text_colors"
+            android:drawableLeft="@drawable/ic_action_search"
+            android:background="@drawable/search_edit_selector"
+            />
+            <Button
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:id="@+id/clear_search"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/ic_clear_black_18dp"
+                android:onClick="clearSearch"/>
+        </FrameLayout>
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/listTasks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="false"
+        android:layout_centerVertical="false"
+        android:listSelector="@drawable/listview_row_selector" />
+
+    <RelativeLayout
+        android:id="@+id/emptyView"
+        android:layout_width="match_parent"
+        android:layout_height="150dp">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center_horizontal"
+            android:paddingTop="50dp"
+            android:text="@string/empty_list"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+</LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
