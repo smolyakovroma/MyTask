@@ -1,12 +1,14 @@
 package smolyakov.roman.ru.mytask.activities;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -46,6 +49,8 @@ public class TodoList extends AppCompatActivity {
     private ArrayList<TodoDocument> listDocuments;
     private ListView listviewTasks;
     private EditText txtSearch;
+    private Button clearSearch;
+    private RelativeLayout layoutListView;
 
     private Intent intent;
     private TodoAdapter todoAdapter;
@@ -66,55 +71,39 @@ public class TodoList extends AppCompatActivity {
         listviewTasks = (ListView) findViewById(R.id.listTasks);
         listviewTasks.setOnItemClickListener(new ListViewClickListener());
         listviewTasks.setEmptyView(findViewById(R.id.emptyView));
-
-
-
-
         txtSearch = (EditText) findViewById(R.id.txtSearch);
         txtSearch.addTextChangedListener(new TextChangeListener());
-
-
+        layoutListView = (RelativeLayout) findViewById(R.id.layoutListView);
+        clearSearch = (Button) findViewById(R.id.clear_search);
+        clearSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(txtSearch.isEnabled()) {
+                    txtSearch.setText("");
+                }
+            }
+        });
         listDocuments = ((AppContext) getApplicationContext()).getListDocuments();
 
         intent = new Intent(this, TodoDetails.class);
 
-//        try {
-//            getActionBar().setDisplayHomeAsUpEnabled(false);
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
-        fillList();
-        updateIndexes();
-
         LocalBroadcastManager.getInstance(this).registerReceiver(refreshListViewReceiver,
                 new IntentFilter(AppContext.RECEIVER_REFRESH_LISTVIEW));
+
+
+        if (((AppContext)getApplicationContext()).getListDocuments()==null) {// если в первый раз загружаем документы
+            new LoadDocumentsTask().execute();
+        }
+
     }
 
-    private void fillList() {
-        File prefsdir = new File(getApplicationInfo().dataDir, "shared_prefs");
-        if (prefsdir.exists() && prefsdir.isDirectory()) {
-            String[] list = prefsdir.list();
-            for (int i = 0; i < list.length; i++) {
-                SharedPreferences sharedPref = getSharedPreferences(list[i].replace(".xml", ""), Context.MODE_PRIVATE);
-                TodoDocument todoDocument = new TodoDocument();
-                todoDocument.setContent(sharedPref.getString(AppContext.FIELD_CONTENT, null));
-                todoDocument.setName(sharedPref.getString(AppContext.FIELD_NAME, null));
-                todoDocument.setCreateDate(new Date(sharedPref.getLong(AppContext.FIELD_CREATE_DATE, 0)));
-                todoDocument.setPriorityType(PriorityType.values()[sharedPref.getInt(AppContext.FIELD_PRIORITY_TYPE, 0)]);
-                listDocuments.add(todoDocument);
-            }
-        }
-    }
 
     @Override
     protected void onStart() {
         super.onStart();
-        todoAdapter = new TodoAdapter(this, listDocuments, checkboxListener);
-        listviewTasks.setAdapter(todoAdapter);
-        checkSearchActive();
-        checkControlsActive();
+        if (listDocuments!=null) {
+            sort();
+        }
 
     }
 
@@ -282,9 +271,6 @@ public class TodoList extends AppCompatActivity {
         }
     }
 
-    public void clearSearch() {
-        txtSearch.setText("");
-    }
 
     private class RefreshListViewReceiver extends BroadcastReceiver {
 
@@ -343,6 +329,85 @@ public class TodoList extends AppCompatActivity {
             menuCreate.setEnabled(indexesForDelete.isEmpty());
             txtSearch.setEnabled(indexesForDelete.isEmpty());
         }
+    }
+
+    private class LoadDocumentsTask extends AsyncTask<Void, Void, Void> {
+
+        private ProgressDialog dialog;
+
+        private File prefsDir = ((AppContext) getApplicationContext())
+                .getPrefsDir();
+
+        @Override
+        protected void onPreExecute() {
+
+            this.dialog = new ProgressDialog(TodoList.this);
+//			this.dialog.setTitle("");
+            this.dialog.setMessage(getResources().getString(R.string.loading));
+
+            if (!this.dialog.isShowing()) {
+                this.dialog.show();
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            sort();
+            layoutListView.setVisibility(View.VISIBLE);
+            this.dialog.dismiss();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            imitateLoaindg();
+
+            AppContext appContext = ((AppContext) getApplicationContext());
+
+            listDocuments = new ArrayList<TodoDocument>();
+
+            if (prefsDir.exists() && prefsDir.isDirectory()) {
+                String[] list = prefsDir.list();
+                for (int i = 0; i < list.length; i++) {
+                    SharedPreferences sharedPref = getSharedPreferences(
+                            list[i].replace(".xml", ""), Context.MODE_PRIVATE);
+                    TodoDocument todoDocument = new TodoDocument();
+                    todoDocument.setContent(sharedPref.getString(
+                            AppContext.FIELD_CONTENT, null));
+                    todoDocument.setCreateDate(new Date(sharedPref.getLong(
+                            AppContext.FIELD_CREATE_DATE, 0)));
+                    todoDocument.setName(sharedPref.getString(
+                            AppContext.FIELD_NAME, null));
+                    todoDocument
+                            .setPriorityType(PriorityType.values()[sharedPref
+                                    .getInt(AppContext.FIELD_PRIORITY_TYPE, 0)]);
+                    todoDocument.setImagePath(sharedPref.getString(
+                            AppContext.FIELD_IMAGE_PATH, null));
+                    listDocuments.add(todoDocument);
+
+                    imitateLoaindg();
+
+                }
+
+            }
+
+            appContext.setListDocuments(listDocuments);
+
+            return null;
+        }
+
+
+        private void imitateLoaindg() {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+
+        }
+
     }
 }
 

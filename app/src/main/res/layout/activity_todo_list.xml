@@ -11,8 +11,12 @@
     tools:context=".TodoList">
 
     <RelativeLayout
+        android:id="@+id/layoutListView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:visibility="invisible">
         <requestFocus/>
         <FrameLayout
             android:layout_width="fill_parent"
@@ -30,9 +34,10 @@
             android:singleLine="true"
             android:textSize="25sp"
             android:paddingTop="3dp"
+            android:paddingLeft="10dp"
             android:paddingBottom="3dp"
             android:textColorHint="@color/search_text_colors"
-            android:drawableLeft="@drawable/ic_action_search"
+
             android:background="@drawable/search_edit_selector"
             />
             <Button
@@ -41,8 +46,7 @@
                 android:id="@+id/clear_search"
                 android:layout_gravity="right|center_vertical"
                 android:layout_marginRight="20dp"
-                android:background="@drawable/ic_clear_black_18dp"
-                android:onClick="clearSearch"/>
+                android:background="@drawable/ic_clear_black_18dp" />
         </FrameLayout>
     </RelativeLayout>
 

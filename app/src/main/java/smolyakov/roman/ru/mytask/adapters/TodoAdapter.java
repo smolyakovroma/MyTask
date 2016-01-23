@@ -44,6 +44,7 @@ public class TodoAdapter extends ArrayAdapter<TodoDocument> {
             viewHolder.checkBox = (CheckBox) convertView
                     .findViewById(R.id.checkBox);
             convertView.setTag(viewHolder);
+            viewHolder.hasImage = (TextView) convertView.findViewById(R.id.txt_has_image);
 //            viewHolder.checkBox.setOnClickListener(checkListener);
             viewHolder.checkBox.setOnClickListener(checkListener);
 
@@ -51,6 +52,11 @@ public class TodoAdapter extends ArrayAdapter<TodoDocument> {
 
         ViewHolder holder = (ViewHolder) convertView.getTag();
         TodoDocument todoDocument = getItem(position);
+
+        if (todoDocument.getImagePath()!=null){
+            holder.hasImage.setText(getContext().getResources().getString(R.string.has_image));
+        }
+
         holder.TodoName.setText(todoDocument.getName());
         holder.TodoDate.setText(DateFormat.format("dd MMMM, yyyy, hh:mm", todoDocument.getCreateDate()));
         switch (todoDocument.getPriorityType()) {
@@ -76,6 +82,7 @@ public class TodoAdapter extends ArrayAdapter<TodoDocument> {
         public TextView TodoDate;
         public ImageView ImagePriority;
         public CheckBox checkBox;
+        public TextView hasImage;
     }
 }
 

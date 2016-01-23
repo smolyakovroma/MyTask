@@ -48,7 +48,7 @@ public class TodoListComparator {
     private static class PriorityComparator implements Comparator<TodoDocument>{
         @Override
         public int compare(TodoDocument lhs, TodoDocument rhs) {
-            int result = lhs.getPriorityType().compareTo(rhs.getPriorityType());
+            int result = rhs.getPriorityType().compareTo(lhs.getPriorityType());
             if(result == 0){
                 result = lhs.getCreateDate().compareTo(rhs.getCreateDate());
             }

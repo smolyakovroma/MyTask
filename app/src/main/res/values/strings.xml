@@ -19,4 +19,10 @@
     <string name="low">низкая</string>
     <string name="middle">средняя</string>
     <string name="high">высокая</string>
+    <string name="photo">фото</string>
+    <string name="title_activity_full_image">FullImage</string>
+    <string name="action_settings">Settings</string>
+    <string name="confirm_delete_image">Вы действительно хотите удалить изображение?</string>
+    <string name="has_image">(изобр.)</string>
+    <string name="loading">Загрузка:</string>
 </resources>

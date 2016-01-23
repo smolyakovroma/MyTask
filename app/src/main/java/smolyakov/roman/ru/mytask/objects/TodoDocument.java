@@ -7,13 +7,28 @@ import java.util.Date;
 public class TodoDocument implements Serializable, Comparable<TodoDocument>{
     private static final long serialVersionUID = 6379234629775400593L;
 
-    private String content;
-    private String name;
-    private Date createDate;
-    private Integer number;
-    private PriorityType priorityType = PriorityType.LOW;
-    private boolean checked;
 
+
+
+    private PriorityType priorityType = PriorityType.LOW;
+    private Integer number;
+    private String name;
+    private String content;
+    private Date createDate;
+    private boolean checked;
+    private String imagePath;
+
+    public TodoDocument() {
+    }
+
+    public TodoDocument(String name, String content, Date createDate, PriorityType priorityType, String imagePath) {
+        super();
+        this.name = name;
+        this.content = content;
+        this.createDate = createDate;
+        this.priorityType = priorityType;
+        this.imagePath = imagePath;
+    }
     public boolean isChecked() {
         return checked;
     }
@@ -45,6 +60,14 @@ public class TodoDocument implements Serializable, Comparable<TodoDocument>{
         return number;
     }
 
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
     public Integer getNumber() {
 
         return number;
@@ -54,17 +77,6 @@ public class TodoDocument implements Serializable, Comparable<TodoDocument>{
         this.number = number;
     }
 
-    public TodoDocument(String content, String name, Date createDate, PriorityType priorityType) {
-        super();
-        this.content = content;
-        this.name = name;
-        this.priorityType = priorityType;
-        this.createDate = createDate;
-    }
-
-    public TodoDocument() {
-
-    }
 
     public String getContent() {
         return content;

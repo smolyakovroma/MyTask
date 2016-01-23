@@ -30,6 +30,13 @@ public class AppContext extends Application {
 
     public static final String RECEIVER_DELETE_DOCUMENT = "smolyakov.roman.ru.mytask.AppContext.DeleteDocument";
     public static final String RECEIVER_REFRESH_LISTVIEW = "smolyakov.roman.ru.mytask.AppContext.RefreshListView";
+    public static final String FIELD_IMAGE_PATH = "imagePath";
+
+    public static final int IMAGE_WIDTH_THMB = 300;
+    public static final int IMAGE_HEIGHT_THMB = 300;
+
+    private ArrayList<TodoDocument> listDocuments;
+
 
     private BroadcastReceiver deleteDocumentReceiver = new DeleteDocumentReceiver();
 
@@ -38,7 +45,6 @@ public class AppContext extends Application {
         // TODO Auto-generated method stub
         super.onCreate();
         LocalBroadcastManager.getInstance(this).registerReceiver(deleteDocumentReceiver, new IntentFilter(RECEIVER_DELETE_DOCUMENT));
-        populateList();
     }
 
     @Override
@@ -48,8 +54,6 @@ public class AppContext extends Application {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(deleteDocumentReceiver);
     }
 
-    private ArrayList<TodoDocument> listDocuments = new ArrayList<TodoDocument>();
-
     public ArrayList<TodoDocument> getListDocuments() {
         return listDocuments;
     }
@@ -58,35 +62,16 @@ public class AppContext extends Application {
         this.listDocuments = listDocuments;
     }
 
-    public String getPrefsDir() {
+    public File getPrefsDir() {
+        return new File(getApplicationInfo().dataDir + "/" + "shared_prefs");
+    }
+
+    public String getPrefsDirPath() {
         return getApplicationInfo().dataDir + "/" + "shared_prefs";
     }
 
-    private void populateList() {
-        File prefsDir = new File(
-                ((AppContext) getApplicationContext()).getPrefsDir());
-
-        if (prefsDir.exists() && prefsDir.isDirectory()) {
-            String[] list = prefsDir.list();
-            for (int i = 0; i < list.length; i++) {
-                SharedPreferences sharedPref = getSharedPreferences(
-                        list[i].replace(".xml", ""), Context.MODE_PRIVATE);
-                TodoDocument todoDocument = new TodoDocument();
-                todoDocument.setContent(sharedPref.getString(
-                        AppContext.FIELD_CONTENT, null));
-                todoDocument.setCreateDate(new Date(sharedPref.getLong(
-                        AppContext.FIELD_CREATE_DATE, 0)));
-                todoDocument.setName(sharedPref.getString(
-                        AppContext.FIELD_NAME, null));
-                todoDocument.setPriorityType(PriorityType.values()[sharedPref
-                        .getInt(AppContext.FIELD_PRIORITY_TYPE, 0)]);
-                listDocuments.add(todoDocument);
-            }
-
-        }
-
-    }
 }
+
 
 
 

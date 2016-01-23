@@ -46,6 +46,9 @@ public class DeleteDocumentReceiver extends BroadcastReceiver {
 
 				getCurrentTodoFile(removedDocument).delete();
 
+				if (removedDocument.getImagePath()!=null){
+					new File(removedDocument.getImagePath()).delete();
+				}
 			}
 			
 			
